@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import com.xworkz.Pinxworkz.entity.VendorEntity;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Repository
 public class VendorRepoImpl implements VendorRepo {
 
@@ -22,22 +24,22 @@ public class VendorRepoImpl implements VendorRepo {
 
 	@Override
 	public boolean save(VendorEntity vmentity) {
-		System.out.println("running in the repoimplementation..");
+		log.info("running in the repoimplementation..");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction et = em.getTransaction();
 		try {
 
 			et.begin();
 			em.persist(vmentity);
-			System.out.println("vmentity data is saved..");
+			log.info("vmentity data is saved..");
 			et.commit();
 
 		} catch (PersistenceException pe) {
-			System.out.println("getting persistence exception.." + pe.getMessage());
+			log.info("getting persistence exception.." + pe.getMessage());
 			et.getRollbackOnly();
 			return false;
 		} finally {
-			System.out.println("closing em..");
+			log.info("closing em..");
 			em.close();
 		}
 
@@ -54,15 +56,15 @@ public class VendorRepoImpl implements VendorRepo {
 			query.setParameter("yk", contactno);
 			Object object = query.getSingleResult();
 			VendorEntity entity = (VendorEntity) object;
-			System.out.println("getting single contact number from database ..");
+			log.info("getting single contact number from database ..");
 			return entity;
 
 		} catch (Exception pe) {
-			System.out.println("getting persistence exception.." + pe);
+			log.info("getting persistence exception.." + pe);
 			return null;
 		} finally {
 			em.close();
-			System.out.println("closing the em from findByContactNumber.. ");
+			log.info("closing the em from findByContactNumber.. ");
 		}
 	}
 
@@ -76,11 +78,11 @@ public class VendorRepoImpl implements VendorRepo {
 			query.setParameter("vgs", gstno);
 			Object object = query.getSingleResult();
 			VendorEntity entity = (VendorEntity) object;
-			System.out.println("getting single gstno from database.");
+			log.info("getting single gstno from database.");
 			return entity;
 
 		} catch (Exception pe) {
-			System.out.println("getting persistance exception.." + pe.getMessage());
+			log.info("getting persistance exception.." + pe.getMessage());
 			return null;
 		} finally {
 			em.close();
@@ -92,26 +94,26 @@ public class VendorRepoImpl implements VendorRepo {
 	public VendorEntity findByEmailid(String emailid) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction et = em.getTransaction();
-		// System.out.println("1 to know which value is comeing.. "+emailid);
+		// log.info("1 to know which value is comeing.. "+emailid);
 		try {
 			et.begin();
 			Query query = em.createNamedQuery("findByEmailid");
 			query.setParameter("vem", emailid);
 
-			// System.out.println("2 to know which valye is comeing.. "+emailid);
+			// log.info("2 to know which valye is comeing.. "+emailid);
 
 			Object object = query.getSingleResult();
-			// System.out.println("to know the values after getting single
+			// log.info("to know the values after getting single
 			// result,,"+object);
 
 			VendorEntity entity = (VendorEntity) object;
-			// System.out.println("to know the values after casting,,"+entity);
+			// log.info("to know the values after casting,,"+entity);
 
-			System.out.println("getting single result from database.");
+			log.info("getting single result from database.");
 			return entity;
 
 		} catch (Exception pe) {
-			System.out.println("getting persistence exception.. " + pe);
+			log.info("getting persistence exception.. " + pe);
 			return null;
 		} finally {
 			em.close();
@@ -127,7 +129,7 @@ public class VendorRepoImpl implements VendorRepo {
 //			em.merge(entity);
 //			et.commit();
 //		} catch (Exception e) {
-//			System.out.println("getting expextion for updateEntityForOtp.." + e.getMessage());
+//			log.info("getting expextion for updateEntityForOtp.." + e.getMessage());
 //			return null;
 //		} finally {
 //			em.clear();
@@ -149,7 +151,7 @@ public class VendorRepoImpl implements VendorRepo {
 //			return entity;
 //			
 //		} catch (Exception e) {
-//               System.out.println("getting exception in findById.."+e.getMessage());
+//               log.info("getting exception in findById.."+e.getMessage());
 //               return id;
 //		}
 //		finally {
@@ -170,7 +172,7 @@ public class VendorRepoImpl implements VendorRepo {
 			et.commit();
 			return true;
 		} catch (Exception e) {
-			System.out.println("getting expection in updatAndSaveOperaction.." + e.getMessage());
+			log.info("getting expection in updatAndSaveOperaction.." + e.getMessage());
 			return false;
 		} finally {
 			em.close();
@@ -194,7 +196,7 @@ public class VendorRepoImpl implements VendorRepo {
          return  list;
         	 
 		} catch (Exception e) {
-                 System.out.println("getting excpetion for onFindAllForAdmin.."+e.getMessage());
+                 log.info("getting excpetion for onFindAllForAdmin.."+e.getMessage());
                  
 		}finally {
 			em.close();

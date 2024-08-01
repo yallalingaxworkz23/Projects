@@ -109,6 +109,7 @@ width: 200ch;
       <th scope="col">Required Date</th>
       <th scope="col">Required Amount</th>
       <th scope="col">Location</th>
+      <th scope="col">status</th>
       <th scope="col">Action</th>
      
       
@@ -123,7 +124,8 @@ width: 200ch;
       <td>${pdto.requireddate}</td>
       <td>${pdto.totalRequired}</td>
   	  <td>${pdto.location}</td>
-     <td> <button onclick="onEditModal(`${pdto.orderId}`)">edit</button> </td>
+  	  <td>${pdto.status}</td>
+     <td> <button onclick="onEditModal(`${pdto.orderId}`)" ${pdto.status eq "InvoiceSent" ? 'disabled="disabled" class="bg-light text-primary"':''}>edit</button> </td>
       </tr>
       </c:forEach>
   

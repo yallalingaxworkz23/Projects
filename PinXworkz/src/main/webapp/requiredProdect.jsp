@@ -109,7 +109,7 @@ border: 1px solid #ccc;
        <div class="container">
          <marquee behavior="alternate" direction="right" scrollamount="20" style="background-color:wite;"> <h2 style="text-shadow: 0px 0px 0px ; color: rgb(16, 17, 17);"><b> Prodect_Required </b></h2></marquee>
          
-        <form action="prodectRequired" method="post">
+        <form action="prodectRequired" method="post" onclick="return form()">
         
          <div class="input">
                <label for="requiredProdectType">Product Type:<span id="types" style="margin-left:20px;"></span></label>      
@@ -169,47 +169,85 @@ border: 1px solid #ccc;
        
         <script>
         function prodectvaladition() {
-        	let prodects=document.getElementById("prodecttype").value;
+        	var prodects=document.getElementById("prodecttype").value;
         	//console.log("prodects")
+        	var button=document.getElementById("button");
         	if(prodects.length>3 && prodects.length<25){
+        		button.removeAttribute("Disabled");
         		document.getElementById("prodects").innerHTML="";
         	}else{
         		document.getElementById("prodects").innerHTML="<span style='color:red;'>must be 3 & 20</span>";
+        		 button.setAttribute("Disabled","");
+                 return;
         	}   	
 			
 		}
         
         function locationValidation() {
-        let locations=document.getElementById("location").value;
+        var locations=document.getElementById("location").value;
+        var button=document.getElementById("button");
         if(locations.length>3 && locations.length<25){
+        	button.removeAttribute("Disabled");
         	document.getElementById("locations").innerHTML="";
         }else{
         	document.getElementById("locations").innerHTML="<span style='color:red;'>must be 3 & 25 </span>";
+        	 button.setAttribute("Disabled","");
+             return;
         	}
        	
 		}
         
         function totalvalidation() {
-			let totals= document.getElementById("totalRequired").value;
+			var totals= document.getElementById("totalRequired").value;
+			var button=document.getElementById("button");
 			if(totals!=0){
+				button.removeAttribute("Disabled");
 				document.getElementById("numbers").innerHTML="";
 			}else{
-			  document.getElementById("numbers").innerHTML="<span style='color:red;'>not be 0</span>";	
+			  document.getElementById("numbers").innerHTML="<span style='color:red;'>not be 0</span>";
+			  button.setAttribute("Disabled","");
+	             return;
 			}
 			
 		}
         
         function prodectTypeValidation() {
         	
-       	let prodectTypess=document.getElementById("select").value;
+       	var prodectTypess=document.getElementById("select").value;
+       	var button=document.getElementById("button");
  			if(prodectTypess==""){
  				document.getElementById("types").innerHTML="<span style='color:red;'>select u r service</span>";
+ 				 button.setAttribute("Disabled","");
+ 	             return;
  			}else{
  				document.getElementById("types").innerHTML="";
+ 				button.removeAttribute("Disabled");
+ 				
  			}
 			
 			
  		}
+        
+        function form() {
+        	var prodects=document.getElementById("prodecttype").value;
+        	var locations=document.getElementById("location").value;
+        	var totals= document.getElementById("totalRequired").value;
+        	var prodectTypess=document.getElementById("select").value;
+        	var button=document.getElementById("button");
+        	
+        	if(prodects.length>3 && prodects.length<25 && locations.length>3 && locations.length<25
+        			&& totals!=0 && prodectTypess==""){
+        		 button.removeAttribute("Disabled");
+        	}else{
+        		button.setAttribute("Disbaled","");
+                return;
+        	}
+        	
+			
+		}
+        
+        
+        
         </script>
         
 </body>

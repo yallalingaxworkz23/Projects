@@ -11,7 +11,12 @@ public interface ProdectService {
 	public List<ProdectDTO> onListOfProdect();
 	
 	public ProdectDTO onEditProdectDto(String orderId);
+
+//	public ProdectDTO findPorductByOrderId(String orderId);
+
+	public ProdectDTO findProductByOrderId(String orderId);
 	
 	public boolean onUpdateProdect(ProdectDTO prodectDTO);
 
+	public boolean onUpdateProdectByAdmin(ProdectDTO prodectDTO);
 }

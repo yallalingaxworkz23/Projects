@@ -30,6 +30,8 @@ import com.xworkz.Pinxworkz.dto.VendorDTO;
 import com.xworkz.Pinxworkz.entity.VendorEntity;
 import com.xworkz.Pinxworkz.repository.VendorRepo;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class VendorServiceImpl  implements VendorService {
 	
@@ -47,8 +49,8 @@ public class VendorServiceImpl  implements VendorService {
 		BeanUtils.copyProperties(vdto, vendorEntity);
 		
 		
-		System.out.println("saving and connecting data from Venderdto to venderentity ");
-		System.out.println("connectin service to repository..");
+		log.info("saving and connecting data from Venderdto to venderentity ");
+		log.info("connectin service to repository..");
 		boolean isSaved = vmanagementrepo.save(vendorEntity);
 		if(isSaved) {
 			sendmail(vdto.getEmailid(),"verification mail","you are registration form is submited thank you..");
@@ -90,7 +92,7 @@ public class VendorServiceImpl  implements VendorService {
 
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			Transport.send(message);
-			System.out.println("email sent successfully..");
+			log.info("email sent successfully..");
 //			vmanagementrepo.findByEmailid(fromEmail);
 			return true;
 
@@ -114,7 +116,9 @@ public class VendorServiceImpl  implements VendorService {
              vmanagementrepo.updatAndSaveOperaction(vendorEntity);
 			boolean mailSent= sendmail(emailid, "your otp for login", otp);
 			if(mailSent) {
+				log.info("by clik genrartOTP otp sent");
 	            return "otp sent to mail";  
+	            
 			}
 			else {
 				return "otp not sent";
@@ -169,7 +173,7 @@ public class VendorServiceImpl  implements VendorService {
               
               entity.setLoginCount(entity.getLoginCount()+1);
               vmanagementrepo.updatAndSaveOperaction(entity);
-              System.out.println("otp is not valid..");
+              log.info("otp is not valid..");
               return "invalid OTP";
             }
             return null;
@@ -179,7 +183,7 @@ public class VendorServiceImpl  implements VendorService {
 //using findbyemailid retriving the entity and converting from entity to dto for display the data in editpage;	
 	@Override
 	public VendorDTO findByEmailID(String emailid) {
-		System.out.println("find by emaliid for do update operaction..");
+		log.info("find by emaliid for do update operaction..");
 		 
 			VendorEntity entity= vmanagementrepo.findByEmailid(emailid);
 			VendorDTO vdto = new VendorDTO();
@@ -195,7 +199,7 @@ public class VendorServiceImpl  implements VendorService {
       
 		VendorEntity entity=new VendorEntity();
 		
-//		System.out.println("afterUpdateSaveOperaction"+id);
+//		log.info("afterUpdateSaveOperaction"+id);
 		
 		vdto.setUpdatedby(vdto.getEmailid());
 		vdto.setUpdateddate(LocalDate.now().toString());
@@ -204,10 +208,15 @@ public class VendorServiceImpl  implements VendorService {
 	//	VendorEntity entity2= vmanagementrepo.findById(entity);
 	//	vdto.setId(entity2.getId());
 		
-		System.out.println("connecting and saving the  afterUpdateSaveOperaction data from Vdto to entity..");
+		log.info("connecting and saving the  afterUpdateSaveOperaction data from Vdto to entity..");
 	//	if(entity2.equals(vdto.getId())) {
 		
-			boolean updateandsave= vmanagementrepo.updatAndSaveOperaction(entity);	
+			boolean updateandsave= vmanagementrepo.updatAndSaveOperaction(entity);
+			if(updateandsave) {
+				
+					sendmail(vdto.getEmailid(),"verification mail","you are Profile is Updated ThankYou..");
+				
+			}
 		
 		
 	//	}
@@ -227,7 +236,7 @@ public class VendorServiceImpl  implements VendorService {
             	  VendorDTO vdto=new VendorDTO(); 
                   BeanUtils.copyProperties(entity, vdto);
                   dtoList.add(vdto);
-                  System.out.println("to know values are adding are not.."+dtoList);
+                  log.info("to know values are adding are not.."+dtoList);
                 		  });
          
            

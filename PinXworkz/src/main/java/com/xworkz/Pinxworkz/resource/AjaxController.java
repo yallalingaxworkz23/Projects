@@ -20,6 +20,8 @@ import com.xworkz.Pinxworkz.services.ProdectService;
 import com.xworkz.Pinxworkz.services.VendorService;
 import com.xworkz.Pinxworkz.services.VendorValidationService;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RestController  //it returns data like string are int
 @RequestMapping("/")
 public class AjaxController {
@@ -37,14 +39,14 @@ public class AjaxController {
 	private VendorService venderservice;
   
 	public AjaxController() {
-	System.out.println("running in the ajaxController.. ");
+	log.info("running in the ajaxController.. ");
 	}
 	
 	@GetMapping (value = "/uniquegstno/{gstno}")
 	public String ongstno(@PathVariable String gstno) {
 	     String gstnotext=venderValidationService.findGstNo(gstno);
 	     if(gstnotext!=null) {
-	    	 System.out.println("from ajax Controller gstno is already exist.."+gstno);
+	    	 log.info("from ajax Controller gstno is already exist.."+gstno);
 	    	 return gstnotext;
 	     }
 		
@@ -55,7 +57,7 @@ public class AjaxController {
 	public String oncontact(@PathVariable String contactno) {
 		String contactText= venderValidationService.findContactNumber(contactno);
 		if(contactText!=null) {
-			System.out.println("from ajaxController contact is already preset.."+contactno);
+			log.info("from ajaxController contact is already preset.."+contactno);
 			return contactText;
 		}
 		return "";
@@ -64,10 +66,10 @@ public class AjaxController {
 	
 	@GetMapping(value = "/uniqueEmail/{emailid}")
 	public String onEmailid(@PathVariable String emailid) {
-		System.out.println("to know which value is comeing to ajaxcontroller.. "+emailid);
+		log.info("to know which value is comeing to ajaxcontroller.. "+emailid);
 		String emailtext= venderValidationService.findEmailid(emailid);
 		if(emailtext!=null) {
-			System.out.println("from ajax controller emailid is already present.."+emailid);
+			log.info("from ajax controller emailid is already present.."+emailid);
 			return emailtext;
 		}
 		return "";
@@ -83,10 +85,10 @@ public class AjaxController {
 	
 	@GetMapping(value="/getInvoice/{orderId}")
 	public InVoiceDTO onViewInvoice(@PathVariable String orderId) {
-		System.out.println("============= get invoice"+orderId);
+		log.info("============= get invoice"+orderId);
 		InVoiceDTO inVoiceDTOforView= inVoicService.onViewInVoiceInService(orderId);
 		if(inVoiceDTOforView!=null) {
-		System.out.println("============= get invoice"+inVoiceDTOforView);
+		log.info("============= get invoice"+inVoiceDTOforView);
 		return inVoiceDTOforView ;
 		}
           return null;
@@ -98,15 +100,18 @@ public class AjaxController {
 //	@GetMapping(value="/forView")
 //	public List<InVoiceDTO> onCkickViewInvoice() {
 //		List<InVoiceDTO> listooInvoice= inVoicService.onViewAllInvoiceByAdmin();
-//		System.out.println("to know orderids..in ajak."+listooInvoice);
+//		log.info("to know orderids..in ajak."+listooInvoice);
 //		return   listooInvoice;
 //	}
 //	
 	
+	
+	//on click the edit in prodect-list by admin 
+	//perform action like get Prodect data and display in model page..
 	@GetMapping(value = "/forEditProdect/{orderId}")
 	public ProdectDTO onEditProdect(@PathVariable String orderId) {
-		ProdectDTO prodectDto= prodectService.onEditProdectDto(orderId);
-		System.out.println("to know .."+prodectDto);
+		ProdectDTO prodectDto= prodectService.findProductByOrderId(orderId);
+		log.info("to know .."+prodectDto);
 		return prodectDto;
 	}
 	

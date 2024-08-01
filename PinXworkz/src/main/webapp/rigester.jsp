@@ -135,62 +135,62 @@ border: 1px solid #ccc;
          <marquee behavior="alternate" direction="right" scrollamount="20" style="background-color: wite;"> <h2 style="text-shadow: 0px 0px 0px ; color: rgb(16, 17, 17);"><b> Registration_Page </b></h2></marquee>
         
 
-        <form action="vmanagemnet" method="post">
+        <form action="vmanagemnet" method="post" onclick="return  form()">
 
            
             <label for="name">Name:<span id="validname" style="margin-left: 20px"></span></label> <div class="input">
-            <input type="text" id="name" name="name" placeholder="Enter your name" onchange="namevalidation()">
+            <input type="text" id="name" name="name" placeholder="Enter your name" onchange="namevalidation()" required="required">
              </div>
              
              <div class="input1">
             <label for="location">Location:<span id="validloc" style="margin-left: 20px"></span></label><span id="ok" ></span>
-            <input type="text" id="location" name="location" placeholder="Enter your location" onchange="locationvalidation()">
+            <input type="text" id="location" name="location" placeholder="Enter your location" onchange="locationvalidation()" required="required">
             </div>
 
             <div class="input">
             <label for="gstno">GST NO:<Span id="gstvl" style="margin-left:20px; " ></Span><span id="ajaxgstvalid" style="color:red"></span></label>
-            <input type="text" id="gstno" name="gstno" placeholder="Enter your gstno" onchange="gstvalidaction()">
+            <input type="text" id="gstno" name="gstno" placeholder="Enter your gstno" onchange="gstvalidaction()" required="required">
             </div>
              
             <div class="input1">
             <label for="companystartdate">Company Start Date:</label><span id="ok" ></span>
-            <input type="date" id="companydate" name="companyStartDate" placeholder="Enter your company started date" >
+            <input type="date" id="companydate" name="companyStartDate" placeholder="Enter your company started date" required="required">
             </div>
 
             <div class="input">
             <label for="ownername">Owner Name:<Span id="own" style="margin-left:20px; " ></Span></label><span id="ok" ></span>
-            <input type="text" id="ownername" name="ownername" placeholder="Enter your owner name" onchange="ownamevalidaction()">
+            <input type="text" id="ownername" name="ownername" placeholder="Enter your owner name" onchange="ownamevalidaction()" required="required">
             </div>
 
 
             <div class="input1">
             <label for="servicetype">Service Type:<Span id="stype" style="margin-left:20px; " ></Span></label><span id="ok" ></span>
-            <input type="text" id="servicetype" name="servicetype" placeholder="Enter your service type" onchange="stypevalidation()" >
+            <input type="text" id="servicetype" name="servicetype" placeholder="Enter your service type" onchange="stypevalidation()" required="required">
             </div>
 
             <div class="input">
 
             <label for="contactno">Contact Num:<Span id="contact" style="margin-left:20px; " ></Span><Span id="ajaxContactValida"  style="color:red; "></Span></label><span id="ok" ></span>
-            <input type="number" id="contactno" name="contactno" placeholder="Enter your contact no" onchange="contactvalidatioin()" >
+            <input type="number" id="contactno" name="contactno" placeholder="Enter your contact no" onchange="contactvalidatioin()" required="required">
             </div>
 <!--             <Span id="validcontajax" style="color:red;" ></Span> -->
 
             <div class="input1">
             <label for="altercontactno">Alternative Num:<Span id="altnumb" style="margin-left:20px; " ></label><span id="ok" ></span>
-            <input type="tel" id="altercontactno" name="alternativeno" placeholder="Enter your alternet contactn no" onchange="alternumvalidation()">
+            <input type="tel" id="altercontactno" name="alternativeno" placeholder="Enter your alternet contactn no" onchange="alternumvalidation()" required="required">
             </div>
 
 
              <div class="input">
             <label for="email">Email Id:<span id="emailvalid" style="margin-left:20px;"></span><span id="ajaxemilvalid" style="color:red;"></span></label>
-            <input type="email" id="emailid" name="emailid" placeholder="Enter your alternet email Id " onchange="emailvalidation()">
+            <input type="email" id="emailid" name="emailid" placeholder="Enter your alternet email Id " onchange="emailvalidation()" required="required">
              </div>
 
 
 
                <div class="input1">
-                 <label for="wibsite">Web Sit:</label><span id="ok" ></span><Span id="websitevalid" style="color:red;"></Span>
-                <input type="url" name="website" id="website" placeholder="Enter you are  Wibesite" onchange="websitvalidaction()"><br>
+                 <label for="wibsite">Web Sit:<Span id="websitevalid" style="margin-left:20px;"></Span></label><span id="ok" ></span>
+                <input type="url" name="website" id="website" placeholder="Enter you are  Wibesite" onchange="websitvalidaction()" required="required"><br>
                 <Span id="validwebsiteajax" style="color:red;"></Span>
 
                 </div>
@@ -221,32 +221,42 @@ border: 1px solid #ccc;
     
 <script>
     function namevalidation(){
-        let names=document.getElementById("name").value;
+        var names=document.getElementById("name").value;
         console.log(names)
+        var button=document.getElementById("button");
         if(names.length>4 && names.length<=25){
             document.getElementById("validname").innerHTML="";
+            button.removeAttribute("Disabled");
         }else{
             document.getElementById("validname").innerHTML="<span style='color:red;'>must be 4 & 25</span>";
+            button.setAttribute("Disabled","");
+            return;
         }
 
     }
     
     function locationvalidation() {
-    	let locations=document.getElementById("location").value;
+    	var locations=document.getElementById("location").value;
     	console.log(locations)
+    	var button=document.getElementById("button");
     	if(locations.length>4 && locations.length<=50){
     		document.getElementById("validloc").innerHTML="";
+    		 button.removeAttribute("Disabled");
     	}else{
     		document.getElementById("validloc").innerHTML="<span style='color:red;'>must be 4 & 25</span>"
+    		button.setAttribute("Disabled","");
+            return;
     	}
 		
 	}
     
     function gstvalidaction() {
-    	let gstcs=document.getElementById("gstno").value;
+    	var gstcs=document.getElementById("gstno").value;
     	console.log(gstcs)
+    	var button=document.getElementById("button");
     	if(gstcs.length>4 && gstcs.length<=20){
     		document.getElementById("gstvl").innerHTML="";
+    		 button.removeAttribute("Disabled");
     		 const xhttp= new XMLHttpRequest();
              xhttp.open("GET","http://localhost:8080/PinXworkz/uniquegstno/"+gstcs);
              xhttp.send();
@@ -257,34 +267,46 @@ border: 1px solid #ccc;
              }
     	}else{
     		document.getElementById("gstvl").innerHTML="<span style='color:red;'>must be 4 & 10</span>";
+    		 button.setAttribute("Disabled","");
+             return;
     	}
     }
     	
    function ownamevalidaction() {
-	let ownames=document.getElementById("ownername").value;
+	var ownames=document.getElementById("ownername").value;
 	console.log(ownames)
+	var button=document.getElementById("button");
 		if(ownames.length>4 && ownames.length<=25){
 			document.getElementById("own").innerHTML="";
+			 button.removeAttribute("Disabled");
 		}else{
 			document.getElementById("own").innerHTML="<span style='color:red;'>must be 4 & 25</span>";
+			 button.setAttribute("Disabled","");
+	            return;
 		}
 	}
     
      function stypevalidation() {
-    	let stypes=document.getElementById("servicetype").value;
+    	var stypes=document.getElementById("servicetype").value;
     	console.log(stypes)
+    	 var button=document.getElementById("button");
     	if(stypes.length>4 && stypes.length<=25){
     		document.getElementById("stype").innerHTML="";
+    		 button.removeAttribute("Disabled");
     	}else{
     		document.getElementById("stype").innerHTML="<span style='color:red;'>must be 4 & 25</span>";
+    		 button.setAttribute("Disabled","");
+             return;
     	} 	
 	}
      
      function contactvalidatioin() {
-    	 let numbers= document.getElementById("contactno").value;
+    	 var numbers= document.getElementById("contactno").value;
     	 console.log(numbers)
+    	 var button=document.getElementById("button");
     	 if(numbers!="" && numbers.length=="10"){
     		 document.getElementById("contact").innerHTML="";
+    		 button.removeAttribute("Disabled");
     		 const xhttp= new XMLHttpRequest();
              xhttp.open("GET","http://localhost:8080/PinXworkz/uniqueContact/"+numbers);
              xhttp.send();
@@ -295,27 +317,35 @@ border: 1px solid #ccc;
              }
     	 }else{
     		 document.getElementById("contact").innerHTML="<span style='color:red;'>must be 10</span>";
+    		 button.setAttribute("Disabled","");
+             return;
     	 }
     	 	
 	}
      
      function alternumvalidation() {
-    	 let alternumber= document.getElementById("altercontactno").value;
+    	 var alternumber= document.getElementById("altercontactno").value;
     	 console.log(alternumber)
+    	 var button=document.getElementById("button");
     	 if(alternumber!="" && alternumber.length=="10"){
     		 document.getElementById("altnumb").innerHTML="";
+    		 button.removeAttribute("Disabled");
     	 }else{
     		document.getElementById("altnumb").innerHTML="<span style='color:red;'>must be 10</span>";
+    		 button.setAttribute("Disabled","");
+             return;
     	 }
     	 
 	}
     
     function emailvalidation() {
-    	let emails=document.getElementById("emailid").value;
+    	var emails=document.getElementById("emailid").value;
     	console.log(emails)
+    	var button=document.getElementById("button");
     	if(emails.length>5 && emails.length<=60){
     		document.getElementById("emailvalid").innerHTML="";
-    		
+    		 button.removeAttribute("Disabled");
+    		 
     		 const xhttp= new XMLHttpRequest();
              xhttp.open("GET","http://localhost:8080/PinXworkz/uniqueEmail/"+emails);
              xhttp.send();
@@ -326,8 +356,55 @@ border: 1px solid #ccc;
              }
     	}else{
     		document.getElementById("emailvalid").innerHTML="<span style='color:red;'>must be valid</span>";
+    		 button.setAttribute("Disabled","");
+             return;
     	}	
 	}
+    
+    function websitvalidaction(){
+    	var webs= document.getElementById("website").value;
+    	var button =document.getElementById("button");
+    	if(webs.length>6){
+    		button.removeAttribute("Disabled");
+    		document.getElementById("websitevalid").innerHTML="";
+    	}else{
+    		document.getElementById("websitevalid").innerHTML="<span style='color:red;'>Must be valid</span>";
+    		 button.setAttribute("Disabled","");
+             return;
+    	}
+    	
+    	
+    }
+    
+    function form(){
+        var names=document.getElementById("name").value;
+        var locations=document.getElementById("location").value;
+        var gstcs=document.getElementById("gstno").value;
+        var ownames=document.getElementById("ownername").value;
+        var stypes=document.getElementById("servicetype").value;
+        var numbers= document.getElementById("contactno").value;
+        var alternumber= document.getElementById("altercontactno").value;
+        var emails=document.getElementById("emailid").value;
+        var webs= document.getElementById("website").value;
+        var button=document.getElementById("button");
+        if(names.length>4 && names.length<=25 
+          && locations.length>4 && locations.length<=50 &&
+         gstcs.length>4 && gstcs.length<=20 && ownames.length>4 && ownames.length<=25 &&
+         stypes.length>4 && stypes.length<=25 && numbers!="" && numbers.length=="10" &&
+         alternumber!="" && alternumber.length=="10" &&
+         emails.length>5 && emails.length<=60  && webs.length>6
+        ){
+            document.getElementById("info").innerHTML="<span style='color:red'>please fill all the from</span>";
+            button.removeAttribute("Disabled");
+            
+        }else{
+            
+            button.setAttribute("Disbaled","");
+            return;
+        }
+
+    }
+    
     
 </script>
 

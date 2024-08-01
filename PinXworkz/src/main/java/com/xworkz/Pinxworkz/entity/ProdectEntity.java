@@ -45,6 +45,9 @@ public class ProdectEntity {
 	
 	@Column(name="p_orderId")
 	private String orderId;
+	
+	@Column(name="p_status")
+	private String status;
 
 
 }

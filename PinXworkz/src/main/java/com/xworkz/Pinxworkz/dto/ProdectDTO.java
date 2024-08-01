@@ -40,5 +40,7 @@ public class ProdectDTO {
 	
 	
 	private String orderId;
+	
+	private String status;
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.xworkz.Pinxworkz.constants.InVoiceConstants;
 import com.xworkz.Pinxworkz.dto.AdminDTO;
 import com.xworkz.Pinxworkz.dto.InVoiceDTO;
 import com.xworkz.Pinxworkz.dto.ProdectDTO;
@@ -26,8 +27,11 @@ import com.xworkz.Pinxworkz.services.InVoiceService;
 import com.xworkz.Pinxworkz.services.ProdectService;
 import com.xworkz.Pinxworkz.services.VendorService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class AdminController {
 	
 	@Autowired
@@ -43,7 +47,8 @@ public class AdminController {
    private VendorService vservice;
 	
 	public AdminController() {
-	       System.out.println("running in the admin Controller..");
+		log.info("log test");
+	       log.info("running in the admin Controller..");
 	}
 
 	
@@ -52,10 +57,11 @@ public class AdminController {
 
 	@PostMapping("/adminlogin")
 	public String onAdminLogin(String emailid,String password,Model model,HttpServletRequest request ) {
-		System.out.println("getting email and password from admain.. "+emailid+""+password);
+		log.info("log test"+emailid);
+		log.info("getting email and password from admain.. "+emailid+""+password);
 	     AdminDTO adminDTO=	 adminService.findByEmailidPassword(emailid, password);
 	     if(adminDTO!=null) {
-	    	 System.out.println("getting admin data from service.."+adminDTO);
+	    	 log.info("getting admin data from service.."+adminDTO);
 	    	 
 	    	 
 	    	 
@@ -69,13 +75,14 @@ public class AdminController {
 	    	 model.addAttribute("adminDTO", adminDTO);
       	List<VendorDTO>  dtolist= vservice.onFindAllVendor();
       	model.addAttribute("vdto", dtolist);
-      	     System.out.println("VenderDTO List.. are"+dtolist);
+      	     log.info("VenderDTO List.. are"+dtolist);
 	    	 return "adminprofile";
 	     }
 	     model.addAttribute("adminerror", "Emailid or password invalid.");
 		return "login";
 	}
 	
+	//by clikc aprove it call the action action-name as aproved sending value along with action are venderEmail and admin email  
 	@GetMapping("/approved")
 	public String onApproved(String emailid,String adminEmail,Model model) {
 		boolean isApporved=adminService.onApprovedOperaction(emailid,adminEmail);
@@ -91,14 +98,18 @@ public class AdminController {
 		
 	}
 	
+	
+	//on click view-Invoice by admin to see list of all Invoice's method is present in inVoiceServices.. 
 	@GetMapping("/viewInvoice")
 	public String onViewInvoice(Model model){
 		List<InVoiceDTO> listOfInvoice= inVoiceService.onViewAllInvoiceByAdmin();
 		model.addAttribute("viewInvoiceList", listOfInvoice);
-		System.out.println("invoice list are in"+listOfInvoice);
+		log.info("invoice list are in"+listOfInvoice);
 		return "viewInVoice";
 	}
 	
+	
+	//to make action pendingOrder to ordered wrote a action onOrder
 	@GetMapping("/onOrder")
 	public String onActionOrder(String orderId,Model model) {
 		boolean isOrderd= adminService.onActionOrderInAdminService(orderId);
@@ -119,9 +130,13 @@ public class AdminController {
 	}
 	
 	
+	
+	// by submit update  in  the form updateProdect action is called action is present in Admincontroller
+	//calling updatemethod from prodectService   it update and save in data base based in id
+	// sending id by hidden
 	@PostMapping("/updateProdect")
 	public String onUpdateProdect(@Valid ProdectDTO prodectDTO,BindingResult forerrors , Model model) {
-		System.out.println(forerrors.hasErrors());
+		log.info(""+forerrors.hasErrors());
 		if(forerrors.hasErrors()) {
 			List<ObjectError> erros= forerrors.getAllErrors();
 			erros.forEach(y->System.err.println(y.getObjectName()+"message.."+y.getDefaultMessage()));
@@ -130,8 +145,11 @@ public class AdminController {
 	       
 			return "viewProdect";
 		}else {
+			//prodectDTO.setStatus(InVoiceConstants.InvoicePending.toString());
 		       boolean updated= prodectService.onUpdateProdect(prodectDTO);	
+		      
 		       if(updated==true) {
+		    	   prodectService.onUpdateProdectByAdmin(prodectDTO);
 		    	   List<ProdectDTO> listOfProducts= prodectService.onListOfProdect();
 		 		  model.addAttribute("pdtos", listOfProducts);
 		       }

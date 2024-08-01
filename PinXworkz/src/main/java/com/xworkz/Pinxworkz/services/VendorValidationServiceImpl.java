@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.xworkz.Pinxworkz.entity.VendorEntity;
 import com.xworkz.Pinxworkz.repository.VendorRepo;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class VendorValidationServiceImpl implements VendorValidationService{
 
@@ -21,7 +23,7 @@ public class VendorValidationServiceImpl implements VendorValidationService{
 				return "number is already exist";
 			}
 		}
-		System.out.println("number is not present save it.." + contactno);
+		log.info("number is not present save it.." + contactno);
 		return null;
 	}
 
@@ -33,22 +35,22 @@ public class VendorValidationServiceImpl implements VendorValidationService{
 				return "gstno is alrady exist";
 			}
 		}
-		System.out.println("gstno is not present save it.." + gstno);
+		log.info("gstno is not present save it.." + gstno);
 		return null;
 	}
 
 	@Override
 	public String findEmailid(String emailid) {
-//		System.out.println("to know what value is comming in service.."+emailid);
+//		log.info("to know what value is comming in service.."+emailid);
 		VendorEntity singleEmailResult = vmanagementrepo.findByEmailid(emailid);
-	//	System.out.println("to know what value is comming from repo to service.."+singleEmailResult);
+	//	log.info("to know what value is comming from repo to service.."+singleEmailResult);
 		
 		if (singleEmailResult != null) {
 			if (singleEmailResult.getEmailid().equals(emailid)) {
 				return "email is already exist";
 			}
 		}
-		System.out.println("emailis is not present save it.." + emailid);
+		log.info("emailis is not present save it.." + emailid);
 		return null;
 	}
 

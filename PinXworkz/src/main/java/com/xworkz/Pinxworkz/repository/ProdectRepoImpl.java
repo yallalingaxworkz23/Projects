@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.xworkz.Pinxworkz.entity.ProdectEntity;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Repository
 public class ProdectRepoImpl implements ProdectRepo{
 
@@ -27,7 +29,7 @@ public class ProdectRepoImpl implements ProdectRepo{
 			em.persist(prodectEntity);
 			et.commit();
 		} catch (Exception e) {
-           System.out.println("getting exception for prodect.."+e.getMessage());
+           log.info("getting exception for prodect.."+e.getMessage());
 		}
 		finally {
 			em.close();
@@ -44,11 +46,11 @@ public class ProdectRepoImpl implements ProdectRepo{
 			et.begin();
 			Query  query=em.createNamedQuery("allProdects");
 			List<ProdectEntity> listofProduct =query.getResultList();
-			System.out.println(listofProduct);
+			log.info(""+listofProduct);
 			return listofProduct;
 			
 		} catch (Exception e) {
-              System.out.println("getting expection.."+e.getMessage());
+              log.info("getting expection.."+e.getMessage());
               
 		}
 		finally {
@@ -71,7 +73,7 @@ public class ProdectRepoImpl implements ProdectRepo{
         	 return entity;
 			
 		} catch (Exception e) {
-			System.out.println("getting expection..in .findProductOnOderId.."+e.getMessage());
+			log.info("getting expection..in .findProductOnOderId.."+e.getMessage());
 			return null;
 		}
          finally {
@@ -91,7 +93,7 @@ public class ProdectRepoImpl implements ProdectRepo{
 			et.commit();
 			return true;
 		} catch (Exception e) {
-			System.out.println("getting exception on onUpdateProdect method in repo.."+e.getMessage());
+			log.info("getting exception on onUpdateProdect method in repo.."+e.getMessage());
 			return false;
 		}
 		finally {

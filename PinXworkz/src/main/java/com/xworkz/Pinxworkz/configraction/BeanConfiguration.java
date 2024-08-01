@@ -10,19 +10,22 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import lombok.extern.slf4j.Slf4j;
+
 @EnableWebMvc
 @Configuration
 @EnableScheduling
 @ComponentScan("com.xworkz.Pinxworkz")
+@Slf4j
 public class BeanConfiguration {
 	
 	public BeanConfiguration() {
-	System.out.println("Bean configuration is created..");
+	log.info("Bean configuration is created..");
 	}
 	
 	@Bean
    public ViewResolver resolver() {
-		System.out.println("running in the vierresolver..");
+		log.info("running in the vierresolver..");
 		ViewResolver resolver=new InternalResourceViewResolver("/",".jsp");
 	return resolver;
 	}

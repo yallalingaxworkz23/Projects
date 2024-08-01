@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import com.xworkz.Pinxworkz.entity.AdminEntity;
 import com.xworkz.Pinxworkz.entity.VendorEntity;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Repository
 public class AdminRepoImpl implements AdminRepo {
 
@@ -37,11 +39,11 @@ public class AdminRepoImpl implements AdminRepo {
 			 Object object= query.getSingleResult();
 			System.err.println("values of object." + object);
 			AdminEntity adminEntity=(AdminEntity)object;
-              System.out.println( "to know data .. from query."+adminEntity);
+              log.info( "to know data .. from query."+adminEntity);
 			return adminEntity;
 
 		} catch (Exception e) {
-			System.out.println("getting exception in adminRepoImpl.." + e.getMessage());
+			log.info("getting exception in adminRepoImpl.." + e.getMessage());
 			return null;
 		} finally {
 			em.close();

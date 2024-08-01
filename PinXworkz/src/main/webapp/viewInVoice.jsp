@@ -108,7 +108,7 @@ width: 200ch;
                     <th scope="col">Price</th>
                     <th scope="col">Delivery-Charge</th>
                     <th scope="col">Discription</th>
-                    <th scope="col">Status</th>>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                   </tr>
                   

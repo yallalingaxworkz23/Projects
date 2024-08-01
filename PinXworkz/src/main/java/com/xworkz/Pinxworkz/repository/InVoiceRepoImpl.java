@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import com.xworkz.Pinxworkz.entity.InVoiceEntity;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class InVoiceRepoImpl implements InVoiceRepo{
 
@@ -28,7 +31,7 @@ public class InVoiceRepoImpl implements InVoiceRepo{
 			et.commit();
 			
 		} catch (Exception e) {
-          System.out.println("getting expection..from invoiceRepo.."+e.getMessage());
+          log.info("getting expection..from invoiceRepo.."+e.getMessage());
       return false;
 		}
 		finally {
@@ -37,6 +40,7 @@ public class InVoiceRepoImpl implements InVoiceRepo{
 		return true;
 	}
 
+	//to get the single Invoicedata of perticular orderId.. 
 	@Override
 	public InVoiceEntity onViewInvoiceInRepo(String orderId) {
 		EntityManager em= emf.createEntityManager();
@@ -47,10 +51,11 @@ public class InVoiceRepoImpl implements InVoiceRepo{
 		  query.setParameter("invgenrated", orderId);
 		  Object invoice= query.getSingleResult();
 		  InVoiceEntity inVoiceEntity=(InVoiceEntity) invoice;
+		  et.commit();
 		  return inVoiceEntity;
 			
 		} catch (Exception e) {
-           System.out.println("getting exception in onViewInvoice.. "+e.getMessage());
+           log.info("getting exception in onViewInvoice.. "+e.getMessage());
 		}
 		finally {
 			em.close();
@@ -67,10 +72,10 @@ public class InVoiceRepoImpl implements InVoiceRepo{
 			et.begin();
 			Query allviewquery= em.createNamedQuery("vewAllInVoice");
 			List<InVoiceEntity> listofInvoice= allviewquery.getResultList();
-			
+			et.commit();
 			return listofInvoice;
 		} catch (Exception e) {
-			System.out.println("getting exception in onViewInvoiceByAdmin .."+e.getMessage());
+			log.info("getting exception in onViewInvoiceByAdmin .."+e.getMessage());
 			return null;
 		}
          finally {
@@ -79,6 +84,8 @@ public class InVoiceRepoImpl implements InVoiceRepo{
 		
 	}
 
+	
+	// for update the invoice entity for perticular orderId 
 	@Override
 	public boolean onActionOrderUpdateOperaction(InVoiceEntity inVoiceEntity) {
 
@@ -90,7 +97,7 @@ public class InVoiceRepoImpl implements InVoiceRepo{
 			et.commit();
 			return true;
 		} catch (Exception e) {
-         System.out.println("getting exception form onActionOrderUpdateOperaction method.."+e.getMessage());
+         log.info("getting exception form onActionOrderUpdateOperaction method.."+e.getMessage());
          return false;
 		}
 		finally {

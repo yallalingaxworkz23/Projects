@@ -18,6 +18,8 @@ import com.xworkz.Pinxworkz.repository.AdminRepo;
 import com.xworkz.Pinxworkz.repository.InVoiceRepo;
 import com.xworkz.Pinxworkz.repository.VendorRepo;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
 	@Autowired
@@ -35,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
 	public AdminDTO findByEmailidPassword(String emailid, String password) {
 
 		AdminEntity entity = adminRepo.findByEmailidAndPassword(emailid, password);
-		System.out.println("to know what value is coming in service from repo.." + entity);
+		log.info("to know what value is coming in service from repo.." + entity);
 		if (entity != null) {
 			AdminDTO adminDTO = new AdminDTO();
 			BeanUtils.copyProperties(entity, adminDTO);
@@ -53,18 +55,26 @@ public class AdminServiceImpl implements AdminService {
 		entity.setUpdatedby(adminEmail);
 		entity.setUpdateddate(LocalDate.now().toString());
 		entity.setStatus(VendorConstants.APPROVED.toString());
-//calling update method from repo to adminservice.
+//calling update method from repo to adminservice. to set status as approved and updatedby and updated date
        boolean isUpdated=vendorRepo.updatAndSaveOperaction(entity);
 		return true;
 	}
 
+	
+//hear I made that bring invoiceEntity by orderId where method is present in invpoiceservice
+	//to bring invoice entity method is present in invoiceRepo reused it and set the status as Odered
+	//and made update operaction method which is present in invoiceRepo
 	@Override
 	public boolean onActionOrderInAdminService(String orderId) {
+		log.info("+++++++++++"+orderId);
+		
 		//on clikc order update and set statue as odered..
 		InVoiceEntity inVoiceEntity= inVoiceRepo.onViewInvoiceInRepo(orderId); 
+		log.info("==================="+inVoiceEntity);
+		
 		inVoiceEntity.setStatus(InVoiceConstants.Orderd.toString());
 		boolean isUpdated= inVoiceRepo.onActionOrderUpdateOperaction(inVoiceEntity);
-		return true;
+		return isUpdated;
 	}
 
 }
