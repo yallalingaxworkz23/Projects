@@ -18,6 +18,7 @@ import lombok.ToString;
 @Table(name="prodect_details")
 @NamedQuery(name = "allProdects",query = "select pa from ProdectEntity pa")
 @NamedQuery(name="findProdectByOrderId",query = "select prd from ProdectEntity prd where prd.orderId=:orderid")
+@NamedQuery(name="findProdectListByProdectType",query = "select pr from ProdectEntity pr where pr.prodectType=:prodectType")
 @Getter
 @Setter
 @ToString

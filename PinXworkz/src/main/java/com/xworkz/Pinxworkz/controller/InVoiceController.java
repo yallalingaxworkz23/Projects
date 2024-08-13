@@ -50,6 +50,9 @@ public class InVoiceController {
 		if (erroeinInvoice.hasErrors()) {
 			List<ObjectError> errorsList = erroeinInvoice.getAllErrors();
 			errorsList.forEach(y -> System.err.println(y.getObjectName() + "message" + y.getDefaultMessage()));
+			List<ProdectDTO> listOfProducts = prodectService.onListOfProdect();
+			model.addAttribute("pdtos", listOfProducts);
+
 			return "profilepage";
 		} else {
 
@@ -64,6 +67,9 @@ public class InVoiceController {
                 redirectAttributes.addFlashAttribute(inVoicedto);
 				return "redirect:/profilepage";
 			}
+			List<ProdectDTO> listOfProducts = prodectService.onListOfProdect();
+			model.addAttribute("pdtos", listOfProducts);
+
 			return "profilepage";
 		}
 

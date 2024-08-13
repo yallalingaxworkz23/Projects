@@ -115,6 +115,27 @@ public class ProdectServiceImpl implements ProdectService{
 		return isUpdated;
 	}
 
+	@Override
+	public List<ProdectDTO> onprodectListByProdectType(String prodectType) {
+      List<ProdectEntity> listofProdectType=   prdectRepo.findAllByProdectType(prodectType);
+      
+      if(listofProdectType!=null) {
+    	  
+    	 List<ProdectDTO> ProdectTypeList=new ArrayList<ProdectDTO>();
+    	 log.info("list of prodects on ProdectType  are..."+ProdectTypeList);
+    	 listofProdectType.forEach(prodects->{
+    		ProdectDTO prodectDTO=new ProdectDTO();
+    		BeanUtils.copyProperties(prodects, prodectDTO);
+    		ProdectTypeList.add(prodectDTO);
+    	 });
+    	 
+    	 return ProdectTypeList;
+    	 
+      }
+      
+		return null;
+	}
+
 	
 
 }

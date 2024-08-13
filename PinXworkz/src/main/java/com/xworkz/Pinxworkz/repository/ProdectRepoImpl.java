@@ -103,4 +103,25 @@ public class ProdectRepoImpl implements ProdectRepo{
 		
 	}
 
+	@Override
+	public List<ProdectEntity> findAllByProdectType(String prodectType) {
+		EntityManager em= emf.createEntityManager();
+		EntityTransaction et= em.getTransaction();
+		try {
+			et.begin();
+			Query query= em.createNamedQuery("findProdectListByProdectType");
+			query.setParameter("prodectType", prodectType);
+			log.info("for prodect type.."+prodectType);
+			List<ProdectEntity> list= query.getResultList();
+			log.info("prodect list are.."+list);
+			return list;
+		} catch (Exception e) {
+			log.error("getting exception on findAllByProdectType.."+e.getMessage());
+			return null;
+		}
+		finally {
+			em.close();
+		}
+	}
+
 }

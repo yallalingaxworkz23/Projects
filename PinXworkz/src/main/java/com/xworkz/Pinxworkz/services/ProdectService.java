@@ -19,4 +19,7 @@ public interface ProdectService {
 	public boolean onUpdateProdect(ProdectDTO prodectDTO);
 
 	public boolean onUpdateProdectByAdmin(ProdectDTO prodectDTO);
+	
+	public List<ProdectDTO> onprodectListByProdectType(String prodectType);
+	
 }

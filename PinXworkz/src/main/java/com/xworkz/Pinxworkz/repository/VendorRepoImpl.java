@@ -214,10 +214,15 @@ public class VendorRepoImpl implements VendorRepo {
 			EntityTransaction transaction = manager.getTransaction();
 			transaction.begin();
 			Query query = manager.createNamedQuery("expireOTP");
+//			query.setParameter("var", true);
 			query.setParameter("currentTime", LocalDateTime.now());
 			query.executeUpdate();
 			transaction.commit();
-		} finally {
+		}
+		catch (Exception e) {
+      // log.info("getting expection in expireOTP .."+e.getMessage());
+		}
+		finally {
 			manager.close();
 		}
 

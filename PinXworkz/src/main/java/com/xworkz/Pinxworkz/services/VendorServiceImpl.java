@@ -31,36 +31,36 @@ import com.xworkz.Pinxworkz.entity.VendorEntity;
 import com.xworkz.Pinxworkz.repository.VendorRepo;
 
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Service
-public class VendorServiceImpl  implements VendorService {
-	
+public class VendorServiceImpl implements VendorService {
+
 	@Autowired
 	private VendorRepo vmanagementrepo;
 
 	@Override
 	public boolean saveOperation(VendorDTO vdto) {
 
-		VendorEntity vendorEntity = new VendorEntity();	
+		VendorEntity vendorEntity = new VendorEntity();
 		vdto.setCreatedby(vdto.getEmailid());
 		vdto.setCreatedate(LocalDate.now().toString());
 		vdto.setStatus(VendorConstants.PENDING.toString());
-	//seting the value to createdby  by emailid  by using set to get	
+		// seting the value to createdby by emailid by using set to get
 		BeanUtils.copyProperties(vdto, vendorEntity);
-		
-		
+
 		log.info("saving and connecting data from Venderdto to venderentity ");
 		log.info("connectin service to repository..");
 		boolean isSaved = vmanagementrepo.save(vendorEntity);
-		if(isSaved) {
-			sendmail(vdto.getEmailid(),"verification mail","you are registration form is submited thank you..");
+		if (isSaved) {
+			sendmail(vdto.getEmailid(), "verification mail", "you are registration form is submited thank you..");
 		}
 		return isSaved;
 	}
 
 	@Async
 	@Override
-	public boolean sendmail(String mail,String subject,String body) {
+	public boolean sendmail(String mail, String subject, String body) {
 
 		String portNumber = "587";
 		String hostName = "smtp.gmail.com";
@@ -109,28 +109,25 @@ public class VendorServiceImpl  implements VendorService {
 	@Override
 	public String generateOTP(String emailid) {
 		VendorEntity vendorEntity = vmanagementrepo.findByEmailid(emailid);
-
+       log.info(vendorEntity.getEmailid());
 		if (vendorEntity != null) {
 			String otp = generateRandomPassword();
-             vendorEntity.setOtp(otp);
-             vmanagementrepo.updatAndSaveOperaction(vendorEntity);
-			boolean mailSent= sendmail(emailid, "your otp for login", otp);
-			if(mailSent) {
+			vendorEntity.setOtp(otp);
+			vendorEntity.setOtpSentTime(LocalDateTime.now().plusMinutes(2l));
+			vendorEntity.setOtpExpired(false);
+			vmanagementrepo.updatAndSaveOperaction(vendorEntity);
+			boolean mailSent = sendmail(emailid, "your otp for login", otp);
+			if (mailSent) {
 				log.info("by clik genrartOTP otp sent");
-	            return "otp sent to mail";  
-	            
-			}
-			else {
+				return "otp sent to mail,Valid for 2 minutes";
+
+			} else {
 				return "otp not sent";
-			} 
+			}
 		}
-		
+
 		return " don't have account please register";
 	}
-	
-	
-
-	
 
 	public String generateRandomPassword() {
 
@@ -149,98 +146,99 @@ public class VendorServiceImpl  implements VendorService {
 
 	@Override
 	public String otpValidation(String emailid, String otp) {
-              VendorEntity entity=  vmanagementrepo.findByEmailid(emailid);
-            if(entity!=null) { 
-            	
-              if( entity.getOtp().equals(otp)) {
-            	  //to chuck time is notnull  and to know time  2:30 is locked and again login 2:31 it not login bacause locked time is 2 minites   
-            	  if(entity.getAccountLockTime()!=null && entity.getAccountLockTime().isAfter(LocalDateTime.now())) {
-                		return "Account Locked try after 2 minutes";
-            	  }
-            	  entity.setLoginCount(0);
-            	  entity.setAccountLockTime(null);
-            	  vmanagementrepo.updatAndSaveOperaction(entity);  
-            	  return "Valid OTP";
-              }
-             
-                 if(entity.getLoginCount()>=3) {
-            	     if(entity.getAccountLockTime()==null) {
-            	       entity.setAccountLockTime(LocalDateTime.now().plusMinutes(2l));
-            	       vmanagementrepo.updatAndSaveOperaction(entity);
-            	      }
-          		return "Account Locked try after 2 minutes";
-                 }
-              
-              entity.setLoginCount(entity.getLoginCount()+1);
-              vmanagementrepo.updatAndSaveOperaction(entity);
-              log.info("otp is not valid..");
-              return "invalid OTP";
-            }
-            return null;
+		VendorEntity entity = vmanagementrepo.findByEmailid(emailid);
+		if (entity != null) {
+			if(entity.isOtpExpired()==true) {
+				return "otp is expired ,reGenerate";
+			}
+
+			if (entity.getOtp().equals(otp)) {
+				// to chuck time is notnull and to know time 2:30 is locked and again login 2:31
+				// it not login bacause locked time is 2 minites
+				if (entity.getAccountLockTime() != null && entity.getAccountLockTime().isAfter(LocalDateTime.now())) {
+					return "Account Locked try after 2 minutes";
+				}
+				entity.setLoginCount(0);
+				entity.setAccountLockTime(null);
+				vmanagementrepo.updatAndSaveOperaction(entity);
+				return "Valid OTP";
+			}
+
+			if (entity.getLoginCount() >= 3) {
+				if (entity.getAccountLockTime() == null) {
+					entity.setAccountLockTime(LocalDateTime.now().plusMinutes(2l));
+					vmanagementrepo.updatAndSaveOperaction(entity);
+				}
+				return "Account Locked try after 2 minutes";
+			}
+
+			entity.setLoginCount(entity.getLoginCount() + 1);
+			vmanagementrepo.updatAndSaveOperaction(entity);
+			log.info("otp is not valid..");
+			return "invalid OTP";
+		}
+		return null;
 	}
 
-	
 //using findbyemailid retriving the entity and converting from entity to dto for display the data in editpage;	
 	@Override
 	public VendorDTO findByEmailID(String emailid) {
 		log.info("find by emaliid for do update operaction..");
-		 
-			VendorEntity entity= vmanagementrepo.findByEmailid(emailid);
-			VendorDTO vdto = new VendorDTO();
-		BeanUtils.copyProperties( entity,vdto);
-	
-		return vdto;
-	}
 
+		VendorEntity entity = vmanagementrepo.findByEmailid(emailid);
+		if(entity!=null) {
+			VendorDTO vdto = new VendorDTO();
+			BeanUtils.copyProperties(entity, vdto);
+			return vdto;
 	
-	
+		}
+		return null; 
+			}
+
 	@Override
 	public boolean afterUpdateSaveOperaction(VendorDTO vdto) {
-      
-		VendorEntity entity=new VendorEntity();
-		
+
+		VendorEntity entity = new VendorEntity();
+
 //		log.info("afterUpdateSaveOperaction"+id);
-		
+
 		vdto.setUpdatedby(vdto.getEmailid());
 		vdto.setUpdateddate(LocalDate.now().toString());
 		vdto.setStatus(VendorConstants.PENDING.toString());
 		BeanUtils.copyProperties(vdto, entity);
-	//	VendorEntity entity2= vmanagementrepo.findById(entity);
-	//	vdto.setId(entity2.getId());
-		
+		// VendorEntity entity2= vmanagementrepo.findById(entity);
+		// vdto.setId(entity2.getId());
+
 		log.info("connecting and saving the  afterUpdateSaveOperaction data from Vdto to entity..");
-	//	if(entity2.equals(vdto.getId())) {
-		
-			boolean updateandsave= vmanagementrepo.updatAndSaveOperaction(entity);
-			if(updateandsave) {
-				
-					sendmail(vdto.getEmailid(),"verification mail","you are Profile is Updated ThankYou..");
-				
-			}
-		
-		
-	//	}
+		// if(entity2.equals(vdto.getId())) {
+
+		boolean updateandsave = vmanagementrepo.updatAndSaveOperaction(entity);
+		if (updateandsave) {
+
+			sendmail(vdto.getEmailid(), "verification mail", "you are Profile is Updated ThankYou..");
+
+		}
+
+		// }
 		return updateandsave;
 	}
 
 	@Override
 	public List<VendorDTO> onFindAllVendor() {
-   //came list of entitys from repo and and store in  listOfEntities
-		
-            List<VendorEntity> listOfEntities=  vmanagementrepo.onFindAllForAdmin();
-            List<VendorDTO> dtoList=new ArrayList<VendorDTO>();
-            
-            
-   // during for each method store  single entity in (entity->) and storing entity to dto.          
-            listOfEntities.forEach(entity->{
-            	  VendorDTO vdto=new VendorDTO(); 
-                  BeanUtils.copyProperties(entity, vdto);
-                  dtoList.add(vdto);
-                  log.info("to know values are adding are not.."+dtoList);
-                		  });
-         
-           
-		
+		// came list of entitys from repo and and store in listOfEntities
+
+		List<VendorEntity> listOfEntities = vmanagementrepo.onFindAllForAdmin();
+		List<VendorDTO> dtoList = new ArrayList<VendorDTO>();
+
+		// during for each method store single entity in (entity->) and storing entity
+		// to dto.
+		listOfEntities.forEach(entity -> {
+			VendorDTO vdto = new VendorDTO();
+			BeanUtils.copyProperties(entity, vdto);
+			dtoList.add(vdto);
+			log.info("to know values are adding are not.." + dtoList);
+		});
+
 		return dtoList;
 	}
 
@@ -249,6 +247,5 @@ public class VendorServiceImpl  implements VendorService {
 	public void setLoginCountZero() {
 		vmanagementrepo.expireOTP();
 	}
-	
 
 }

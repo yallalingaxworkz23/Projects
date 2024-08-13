@@ -84,11 +84,11 @@ width: 200ch;
             <div>
                 <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="logo" style="height: 80px; width: 160px;">
             </div>
-         <!-- <a class="navbar-brand" href="index.jsp"  style="margin-left: 670px ; font-size: 35px; color:white;"> <b>Home</b></a>
+          <a class="navbar-brand" href="backToVenderProfile"  style="margin-left: 670px ; font-size: 35px; color:white;"> <b>Home</b></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>-->
+            <span class="navbar-toggler-icon"></span>
           </button>
-        <button onclick="onOpenModalForUploadImage(`${venderEmaild}`)"  style="margin-left:700px "> <img alt="UpIm" style="height:70px;width: 60px; border-radius: 50%; margin-left:0px ;margin-top: 1px;padding: 0px"
+        <button onclick="onOpenModalForUploadImage(`${venderEmaild}`)" > <img alt="UpIm" style="height:70px;width: 60px; border-radius: 50%; margin-left:0px ;margin-top: 1px;padding: 0px"
            src="display?fileName=${picPath == null ? 'temp.jpg' : picPath}">
             </button>
           <p style="margin-bottom: -0px;margin-left: 5px"; ><b>   ${venderEmaild}  </b></p>
@@ -99,13 +99,16 @@ width: 200ch;
        
       
       <center><h3> <b> User_profile page </b></h3></center>
-       <form action="onSearch" method="post" style="margin-left: 150vh;margin-top: -50px" > <select name="prodectType" placeholder="Search by ProdectType" style="border-width:85%;border: 3px solid;padding: 7px;border-radius: 7px;" >
-           <option>Select</option>
-           <option>Food and Beverages</option>
-           <option>Electronics</option>
-           <option>Furnitures</option>  
-           <option>Others</option>
-      </select> <button type="submit" >Search</button></a></form>
+       <form action="onSearch" method="post" style="margin-left: 150vh;margin-top: -50px" >
+         <select name="prodectType" placeholder="Search by ProdectType" style="border-width:85%;border: 3px solid;padding: 7px;border-radius: 7px;" >
+         <option >Select</option>
+         <option>Food and Beverages</option>
+         <option>Electronics</option>
+         <option>Furnitures</option>
+         <option>Others</option>
+         </select>
+         <button type="submit">Search</button></a>
+       </form>
       
      <div class="container">
      
@@ -144,9 +147,9 @@ width: 200ch;
       
       </table>
       </div>
-       <a onclick="prevPage()" href='#' id="btn_prev" style="margin-left: 140vh"><button>Prev</button></a>
+     <!--  <a onclick="prevPage()" href='#' id="btn_prev" style="margin-left: 140vh"><button>Prev</button></a>
        <a onclick="nextPage()" href='#' id="btn_next"  style="margin-left: 00px"><button> Next</button></a>
-   <b> page: <span id="page"></span></b> 
+   <b> page: <span id="page"></span></b>--> 
      </div>
      
      
@@ -335,7 +338,7 @@ width: 200ch;
 		
 	}
      
-     //for pagination..
+/*     //for pagination..
      var current_page = 1;
 var records_per_page = 7;
 var l = document.getElementById("listingTable").rows.length
@@ -404,7 +407,7 @@ return Math.ceil((l - 1) / records_per_page);
 window.onload = function() {
 changePage(current_page);
 };
-
+*/
      </script>
      
 </body>

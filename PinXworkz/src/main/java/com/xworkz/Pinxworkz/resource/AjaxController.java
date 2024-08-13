@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xworkz.Pinxworkz.dto.InVoiceDTO;
 import com.xworkz.Pinxworkz.dto.ProdectDTO;
+import com.xworkz.Pinxworkz.dto.VendorDTO;
 import com.xworkz.Pinxworkz.services.InVoiceService;
 import com.xworkz.Pinxworkz.services.ProdectService;
 import com.xworkz.Pinxworkz.services.VendorService;
@@ -115,6 +116,11 @@ public class AjaxController {
 		return prodectDto;
 	}
 	
-	
+//	@RequestMapping(value = "/forSearchVender/{gstno}")
+//	public String onforSearchVender(@PathVariable String gstno) {
+//		String vdto= venderValidationService.findGstNo(gstno);
+//		log.info("finding the venderDTO by emailid..+++++++++++++++++++++++++++++++++"+vdto);
+//		return vdto;
+//	}
 	
 }

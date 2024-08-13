@@ -159,4 +159,40 @@ public class AdminController {
 		
 	}
 	
+	@GetMapping("/backtoprofilebyinvoice")
+	public String onbacktoprofilebyinvoice(Model model) {
+		List<VendorDTO>  dtolist= vservice.onFindAllVendor();
+      	model.addAttribute("vdto", dtolist);
+		return "adminprofile";
+		}
+	
+	@GetMapping("/backadminfilebyprodect")
+	public String onbacktoprofilebyprodect(Model model) {
+		List<VendorDTO>  dtolist= vservice.onFindAllVendor();
+      	model.addAttribute("vdto", dtolist);
+		return "adminprofile";
+	}
+	
+	@GetMapping("/backtoprofilebyrp")
+	public String onbacktoprofilebyrp(Model model) {
+		List<VendorDTO>  dtolist= vservice.onFindAllVendor();
+      	model.addAttribute("vdto", dtolist);
+		return "adminprofile";
+	}
+	
+	@PostMapping("/tofindTheVender")
+	public String ontofindTheVender(String emailid,Model model) {
+		log.info("to know which emailid is coming.."+emailid);
+		if(emailid!=null) {
+		VendorDTO vdto= vservice.findByEmailID(emailid);
+		
+		log.info("venderDTO is..+++++++++"+vdto);
+		model.addAttribute("vdto", vdto);
+		return "searchVender";
+		}
+	      	List<VendorDTO>  dtolist= vservice.onFindAllVendor();
+	      	model.addAttribute("vdto", dtolist);
+		return "adminprofile";
+	}
+	
 }

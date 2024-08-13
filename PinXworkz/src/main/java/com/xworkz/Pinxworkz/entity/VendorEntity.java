@@ -25,18 +25,19 @@ import lombok.Setter;
 @Setter
 @Table(name="vmanagemantrigester")
 @Entity
-@NamedQuery(name = "expireOTP", query = "update VendorEntity entity set entity.loginCount=0 ,entity.accountLockTime=null where entity.accountLockTime<:currentTime")
+@NamedQuery(name = "expireOTP", query = "update VendorEntity entity set entity.isOtpExpired=true where entity.otpSentTime<:currentTime")
 @NamedQuery(name="findAllForAdmin",query = "Select fa from VendorEntity fa")
 @NamedQuery(name="findById",query = "Select pr from VendorEntity pr where pr.id=:idn")
 @NamedQuery(name = "findByContactNumber",query = "Select cn from VendorEntity cn where cn.contactno=:yk")
 @NamedQuery(name = "findByGstNo",query = "select gs from VendorEntity gs where gs.gstno=:vgs")
 @NamedQuery(name = "findByEmailid",query = "select em from VendorEntity em where em.emailid=:vem")
+
 public class VendorEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="v_id")
 	private int id;
-	
+
 	@Column(name = "v_name")
 	private String name;
 	
@@ -91,5 +92,13 @@ public class VendorEntity {
 	@Column(name="v_accountLockTime")
 	private LocalDateTime accountLockTime;
 	
+	@Column(name="v_isOtpExpired")
+	private boolean isOtpExpired;
+	
+	@Column(name="v_otpSentTime")
+	private LocalDateTime otpSentTime;
+	
+	@Column(name="v_profile_picName")
+	private String picName;
 
 }

@@ -14,5 +14,7 @@ public interface ProdectRepo {
 	public ProdectEntity findProductOnOderId(String orderId);
 	
 	public boolean onUpdateProdect(ProdectEntity prodectEntity);
+	
+	public List<ProdectEntity> findAllByProdectType(String prodectType);
 
 }

@@ -39,8 +39,9 @@ public class ProdectController {
 	// by submit the prodect From call the action name as prodectRequired it send
 	// the prodectDTO and save in the database..
 	@PostMapping("/prodectRequired")
-	public String onSaveProdect(@Valid ProdectDTO pdto, BindingResult binderrors, Model model,RedirectAttributes redirectAttributes) {
-		log.info(""+binderrors.hasErrors());
+	public String onSaveProdect(@Valid ProdectDTO pdto, BindingResult binderrors, Model model,
+			RedirectAttributes redirectAttributes) {
+		log.info("" + binderrors.hasErrors());
 		model.addAttribute("errors", pdto);
 		log.info("mapping occurs for prodectRequored.." + pdto);
 
@@ -54,18 +55,35 @@ public class ProdectController {
 			redirectAttributes.addFlashAttribute(pdto);
 			List<VendorDTO> listofVender = vmanagementservice.onFindAllVendor();
 			model.addAttribute("vdto", listofVender);
-			
+
 			return "redirect:/adminprofile";
 		}
 
 	}
-	
+
 	@GetMapping("/adminprofile")
 	private String adminprofile(Model model) {
-		
+
 		List<VendorDTO> listofVender = vmanagementservice.onFindAllVendor();
 		model.addAttribute("vdto", listofVender);
 		return "adminprofile";
+	}
+
+	@PostMapping("/onSearch")
+	public String onSearchProdectTypes(String prodectType, Model model) {
+		log.info("==================================="+prodectType+"end");
+		if (prodectType!="Select") {
+			List<ProdectDTO> prodectTypeList = prodectService.onprodectListByProdectType(prodectType);
+			if (prodectTypeList != null) {
+				model.addAttribute("pdtos", prodectTypeList);
+				log.info("list of pdtos on prodectType.." + prodectTypeList);
+				return "searchProdect";
+			}
+		}else
+		log.info("prodect type is select soo...returning the profilepage.." + prodectType);
+		List<ProdectDTO> listOfProdects = prodectService.onListOfProdect();
+		model.addAttribute("pdtos", listOfProdects);
+		return "profilepage";
 	}
 
 }

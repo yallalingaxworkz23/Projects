@@ -67,4 +67,10 @@ public class VendorDTO extends AuditDTO {
 	
 	private LocalDateTime accountLockTime;
 	
+	private boolean isOtpExpired;
+	
+	private String otpSentTime;
+	
+	private String picName;
+	
 }
